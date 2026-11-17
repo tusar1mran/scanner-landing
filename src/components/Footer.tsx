@@ -51,7 +51,13 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-black/5 py-6 text-xs text-zinc-400 sm:flex-row">
-          <span>© {new Date().getFullYear()} Starconnect. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()}{" "}
+            <a href="https://github.com/tusar1mran" target="_blank" rel="noopener noreferrer" className="font-medium text-zinc-700 hover:text-brand-dark">
+              Tusar Imran
+            </a>
+            . All rights reserved.
+          </span>
           <span>Made for Android</span>
         </div>
       </div>
