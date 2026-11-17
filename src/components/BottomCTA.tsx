@@ -6,8 +6,7 @@ import { ArrowRight } from "lucide-react";
 import PhoneFrame from "./PhoneFrame";
 import { gsap, useIsoLayoutEffect, useReveal, FULL_MOTION } from "@/lib/gsap";
 
-// TODO: replace with the Google Play listing or APK URL once published.
-const DOWNLOAD_URL = "#download";
+import { APK_SIZE, APK_URL, APK_VERSION } from "@/lib/links";
 
 export default function BottomCTA() {
   const root = useRef<HTMLElement>(null);
@@ -72,12 +71,24 @@ export default function BottomCTA() {
           <div data-reveal className="mt-9">
             <a
               data-magnetic
-              href={DOWNLOAD_URL}
+              href={APK_URL}
+              download
               className="group inline-flex items-center gap-3 rounded-full bg-white px-7 py-4 text-base font-bold text-brand-dark shadow-xl shadow-black/10 transition-colors hover:bg-[#F0FBF8]"
             >
               Download for Android
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
+            <p className="mt-4 text-sm text-white/70">
+              APK v{APK_VERSION} · {APK_SIZE} ·{" "}
+              <a
+                href="https://github.com/tusar1mran/scanner-landing#install-on-android"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-white"
+              >
+                How to install
+              </a>
+            </p>
           </div>
         </div>
         <div className="relative z-10 flex h-[360px] justify-center overflow-hidden sm:h-[440px] lg:h-auto">

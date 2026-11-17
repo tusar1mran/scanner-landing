@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { ArrowDown, ArrowRight, Crop, FileText, ScanText, WifiOff } from "lucide-react";
 import PhoneFrame from "./PhoneFrame";
+import { APK_URL } from "@/lib/links";
 import { gsap, SplitText, useIsoLayoutEffect, FULL_MOTION } from "@/lib/gsap";
 
 const chips = [
@@ -133,7 +134,8 @@ export default function Hero() {
 
           <div data-hero-fade className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href="#download"
+              href={APK_URL}
+              download
               className="group inline-flex items-center gap-3 rounded-full bg-brand px-7 py-4 text-base font-bold text-white shadow-lg shadow-brand/30 transition-all hover:-translate-y-0.5 hover:bg-brand-dark"
             >
               Download for Android
