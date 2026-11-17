@@ -1,60 +1,88 @@
 "use client";
 
-import React from "react";
-import { Download, ChevronRight, Zap } from "lucide-react";
+import React, { useRef } from "react";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import PhoneFrame from "./PhoneFrame";
+import { gsap, useIsoLayoutEffect, useReveal, FULL_MOTION } from "@/lib/gsap";
+
+// TODO: replace with the Google Play listing or APK URL once published.
+const DOWNLOAD_URL = "#download";
 
 export default function BottomCTA() {
+  const root = useRef<HTMLElement>(null);
+  useReveal(root);
+
+  useIsoLayoutEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const mm = gsap.matchMedia();
+    mm.add(FULL_MOTION, () => {
+      gsap.from("[data-cta-card]", {
+        scale: 0.92,
+        borderRadius: 80,
+        ease: "none",
+        scrollTrigger: { trigger: el, start: "top bottom", end: "top 30%", scrub: true },
+      });
+      gsap.fromTo(
+        "[data-cta-phone]",
+        { y: 160 },
+        { y: 0, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "center center", scrub: true } },
+      );
+
+      // Magnetic button
+      const btn = el.querySelector<HTMLElement>("[data-magnetic]");
+      if (!btn || !window.matchMedia("(pointer: fine)").matches) return;
+      const xTo = gsap.quickTo(btn, "x", { duration: 0.5, ease: "power3" });
+      const yTo = gsap.quickTo(btn, "y", { duration: 0.5, ease: "power3" });
+      const move = (e: PointerEvent) => {
+        const r = btn.getBoundingClientRect();
+        xTo((e.clientX - (r.left + r.width / 2)) * 0.3);
+        yTo((e.clientY - (r.top + r.height / 2)) * 0.3);
+      };
+      const leave = () => {
+        xTo(0);
+        yTo(0);
+      };
+      btn.addEventListener("pointermove", move);
+      btn.addEventListener("pointerleave", leave);
+      return () => {
+        btn.removeEventListener("pointermove", move);
+        btn.removeEventListener("pointerleave", leave);
+      };
+    });
+    return () => mm.revert();
+  }, []);
+
   return (
-    <section id="download" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-7xl mx-auto rounded-[40px] bg-gradient-to-r from-[#3B82F6] via-[#4F46E5] to-[#7C3AED] p-10 sm:p-20 text-center text-white shadow-2xl relative overflow-hidden">
-        {/* Soft Cloud Ambient Lights */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-white/20 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-indigo-300/20 blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 max-w-3xl mx-auto">
-          {/* Top Pill Announcement */}
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold backdrop-blur-md cursor-pointer hover:bg-white/25 transition-colors">
-            <span>Doc Scanner 1.0 is now available for Android</span>
-            <ChevronRight className="h-3 w-3" />
-          </div>
-
-          {/* Heading with Serif Italic */}
-          <h2 className="mt-6 text-4xl sm:text-6xl font-black tracking-tight leading-tight">
-            Document scanning made simple{" "}
-            <span className="font-serif-italic font-normal block sm:inline">
-              for modern smartphones
-            </span>
+    <section id="download" ref={root} className="bg-white px-3 py-16 sm:px-6 sm:py-24">
+      <div
+        data-cta-card
+        className="relative mx-auto grid max-w-6xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#12B89E] via-brand to-[#08705F] text-white lg:grid-cols-2"
+      >
+        <div aria-hidden className="bg-grid absolute inset-0 opacity-30 [filter:invert(1)]" />
+        <div className="relative z-10 px-7 pb-4 pt-14 sm:px-14 sm:pt-20 lg:pb-20">
+          <Image data-reveal src="/icon.png" alt="" width={64} height={64} className="h-16 w-16 rounded-2xl shadow-lg ring-1 ring-white/30" />
+          <h2 data-reveal className="mt-8 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
+            Your next scan is <span className="font-serif-italic">one tap away.</span>
           </h2>
-
-          <p className="mt-5 text-sm sm:text-base text-indigo-100 max-w-xl mx-auto leading-relaxed">
-            The privacy-first on-device scanner that digitizes receipts, multi-page contracts, and ID cards with real-time AI edge dewarping, instant offline exports, and zero cloud tracking.
+          <p data-reveal className="mt-5 max-w-md text-lg leading-relaxed text-white/80">
+            Free to download, no watermarks, no account. Get Doc Scanner for Android.
           </p>
-
-          {/* Dual Pill Action Buttons */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div data-reveal className="mt-9">
             <a
-              href="#download-apk"
-              onClick={(e) => {
-                e.preventDefault();
-                alert("Doc Scanner APK v1.0 direct download starting...");
-              }}
-              className="flex items-center gap-2.5 rounded-full bg-white hover:bg-indigo-50 text-[#4338CA] px-8 py-3.5 text-xs font-black shadow-xl transition-all hover:scale-105 active:scale-95"
+              data-magnetic
+              href={DOWNLOAD_URL}
+              className="group inline-flex items-center gap-3 rounded-full bg-white px-7 py-4 text-base font-bold text-brand-dark shadow-xl shadow-black/10 transition-colors hover:bg-[#F0FBF8]"
             >
-              <Zap className="h-3.5 w-3.5 fill-[#4338CA] text-[#4338CA]" />
-              <span>Start scanning now</span>
+              Download for Android
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
-
-            <a
-              href="#download-apk"
-              onClick={(e) => {
-                e.preventDefault();
-                alert("Doc Scanner APK v1.0 direct download starting...");
-              }}
-              className="flex items-center gap-2 rounded-full border border-white/40 bg-white/10 hover:bg-white/20 text-white px-7 py-3.5 text-xs font-bold backdrop-blur-sm transition-all hover:scale-105 active:scale-95"
-            >
-              <Download className="h-3.5 w-3.5" />
-              <span>Download APK (Free)</span>
-            </a>
+          </div>
+        </div>
+        <div className="relative z-10 flex h-[360px] justify-center overflow-hidden sm:h-[440px] lg:h-auto">
+          <div data-cta-phone className="absolute top-10 lg:top-16">
+            <PhoneFrame src="/screens/home.png" alt="" className="w-[260px] sm:w-[290px]" sizes="290px" />
           </div>
         </div>
       </div>

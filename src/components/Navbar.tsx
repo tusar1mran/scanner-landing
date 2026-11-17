@@ -1,114 +1,101 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
+import BrandMark from "./BrandMark";
+
+const links = [
+  { href: "#how", label: "How it works" },
+  { href: "#tools", label: "Tools" },
+  { href: "#privacy", label: "Privacy" },
+  { href: "#screens", label: "Screens" },
+  { href: "#faq", label: "FAQ" },
+];
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrolled(window.scrollY > 12);
+      setProgress(max > 0 ? window.scrollY / max : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="w-full pt-6 pb-4 px-4 sm:px-8 max-w-7xl mx-auto relative z-50">
-      <div className="flex items-center justify-between">
-        {/* Left Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-600">
-          <a href="#features" className="hover:text-zinc-950 transition-colors">
-            Features
-          </a>
-          <a href="#edge-detection" className="hover:text-zinc-950 transition-colors">
-            Edge Detection
-          </a>
-          <a href="#id-card" className="hover:text-zinc-950 transition-colors">
-            ID Card Mode
-          </a>
-          <a href="#pricing" className="hover:text-zinc-950 transition-colors">
-            Comparison
-          </a>
-        </nav>
-
-        {/* Center Brand Logo (Doc // scanner) */}
-        <a href="#" className="flex items-center gap-2.5 group">
-          <div className="h-9 w-9 rounded-xl bg-[#5B4DF6] text-white flex items-center justify-center font-black text-sm shadow-md shadow-[#5B4DF6]/30 transition-transform group-hover:scale-105">
-            <svg
-              className="w-5 h-5 fill-current"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" opacity="0.3" />
-              <path d="M3 4v4h2V6h2V4H3zm14 0v2h2v2h2V4h-4zM3 16v4h4v-2H5v-2H3zm16 2h-2v2h4v-4h-2v2z" />
-            </svg>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="font-extrabold text-xl text-zinc-950 tracking-tight">
-              Doc
-            </span>
-            <span className="text-zinc-400 font-normal text-lg">{"//"}</span>
-            <span className="font-semibold text-lg text-zinc-700">scanner</span>
-          </div>
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6">
+      <div
+        className={`relative mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 py-2.5 transition-all duration-500 sm:px-5 ${
+          scrolled || open
+            ? "border border-black/5 bg-white/80 shadow-card backdrop-blur-xl"
+            : "border border-transparent bg-transparent"
+        }`}
+      >
+        <a href="#top" aria-label="Doc Scanner home">
+          <BrandMark />
         </a>
 
-        {/* Right CTA Button (Pill style with arrow) */}
-        <div className="hidden md:flex items-center">
-          <a
-            href="#download"
-            className="inline-flex items-center gap-2 rounded-full bg-[#EEF2FF] hover:bg-[#E0E7FF] text-[#4338CA] px-5 py-2.5 text-xs font-bold transition-all hover:scale-105 active:scale-95 border border-[#C7D2FE]/60"
-          >
-            <span>Get APK free</span>
-            <div className="h-4 w-4 rounded-full bg-[#4338CA] text-white flex items-center justify-center">
-              <ArrowRight className="h-2.5 w-2.5" />
-            </div>
-          </a>
-        </div>
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="rounded-full px-3.5 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-black/[0.04] hover:text-ink"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
 
-        {/* Mobile Hamburger Button */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl text-zinc-700 hover:bg-zinc-100"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
+        <a
+          href="#download"
+          className="group hidden items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 md:inline-flex"
+        >
+          Get the app
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        </a>
+
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="rounded-xl p-2 text-zinc-700 hover:bg-black/5 md:hidden"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+        >
+          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+
+        {/* scroll progress */}
+        <span
+          aria-hidden
+          className="absolute bottom-0 left-4 right-4 h-[2px] origin-left rounded-full bg-brand transition-opacity"
+          style={{ transform: `scaleX(${progress})`, opacity: scrolled ? 1 : 0 }}
+        />
       </div>
 
-      {/* Mobile Menu Dropdown */}
-      {mobileMenuOpen && (
-        <div className="mt-4 rounded-2xl bg-white p-6 shadow-xl border border-zinc-200 md:hidden flex flex-col gap-4">
-          <a
-            href="#features"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-base font-semibold text-zinc-700 hover:text-[#5B4DF6]"
-          >
-            Features
-          </a>
-          <a
-            href="#edge-detection"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-base font-semibold text-zinc-700 hover:text-[#5B4DF6]"
-          >
-            Edge Detection
-          </a>
-          <a
-            href="#id-card"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-base font-semibold text-zinc-700 hover:text-[#5B4DF6]"
-          >
-            ID Card Mode
-          </a>
-          <a
-            href="#pricing"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-base font-semibold text-zinc-700 hover:text-[#5B4DF6]"
-          >
-            Comparison
-          </a>
+      {open && (
+        <div className="mx-auto mt-2 flex max-w-6xl flex-col gap-1 rounded-2xl border border-black/5 bg-white p-3 shadow-card md:hidden">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={() => setOpen(false)}
+              className="rounded-xl px-4 py-3 text-base font-semibold text-zinc-700 hover:bg-brand-soft hover:text-brand-dark"
+            >
+              {l.label}
+            </a>
+          ))}
           <a
             href="#download"
-            onClick={() => setMobileMenuOpen(false)}
-            className="mt-2 flex items-center justify-center gap-2 rounded-full bg-[#5B4DF6] text-white py-3 text-sm font-bold"
+            onClick={() => setOpen(false)}
+            className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-brand py-3 text-base font-bold text-white"
           >
-            <span>Download APK Free</span>
-            <ArrowRight className="h-4 w-4" />
+            Get the app <ArrowRight className="h-4 w-4" />
           </a>
         </div>
       )}

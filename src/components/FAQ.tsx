@@ -1,83 +1,106 @@
 "use client";
 
-import React, { useState } from "react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { Plus } from "lucide-react";
+import { gsap, useIsoLayoutEffect, useReveal } from "@/lib/gsap";
 
-export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+const faqs = [
+  {
+    q: "Does Doc Scanner add a watermark to my PDFs?",
+    a: "No. Exports are clean. The Watermark tool is there only for when you want to stamp your own text on a page.",
+  },
+  {
+    q: "Do my documents get uploaded anywhere?",
+    a: "Scanning, cropping and text recognition run on your phone, and documents are kept in the app's local storage. You choose when to share a file.",
+  },
+  {
+    q: "Can I extract text without internet?",
+    a: "Yes. Extract Text uses on-device Google ML Kit text recognition, so it works in flight mode.",
+  },
+  {
+    q: "How does ID Card mode work?",
+    a: "Scan the front, then the back. The app crops both sides and places them together on a single A4 page.",
+  },
+  {
+    q: "Do I need to create an account?",
+    a: "No. Open the app and start scanning.",
+  },
+  {
+    q: "Which phones are supported?",
+    a: "Doc Scanner 1.0 is available for Android.",
+  },
+];
 
-  const faqs = [
-    {
-      q: "Is Doc Scanner truly free with zero watermarks?",
-      a: "Yes, absolutely. Unlike commercial apps that stamp 'Scanned by...' on free exports, Doc Scanner produces clean, unbranded, professional-grade PDFs without charging any fees or subscription costs.",
-    },
-    {
-      q: "Are my documents or photos ever uploaded to a remote cloud?",
-      a: "Never. Doc Scanner operates entirely on a local-first, zero-cloud architecture. All camera feeds, processed images, OCR routines, and databases reside strictly on your smartphone's internal storage.",
-    },
-    {
-      q: "How does the Dual-Side ID Card mode work?",
-      a: "Switch to ID Card mode in the scanner. First, capture the front side of your ID or driver's license, then flip and capture the back. Doc Scanner automatically centers and stitches both sides onto a single A4 page.",
-    },
-    {
-      q: "Can I extract text (OCR) without an active internet connection?",
-      a: "Yes. Text recognition is powered by on-device Google ML Kit models that execute directly on your phone's processor. You can extract and copy text even when in full airplane mode.",
-    },
-    {
-      q: "How does password protection work for exported PDFs?",
-      a: "During the export step, check the 'Password Protect' option and type your chosen secret. The PDF is encrypted with standard AES encryption, making it unreadable without the correct passcode.",
-    },
-    {
-      q: "Which Android versions are supported?",
-      a: "Doc Scanner is optimized for Android 7.0 (Nougat) and higher, supporting both modern New Architecture runtime and legacy Android hardware seamlessly.",
-    },
-  ];
+function Item({ q, a, open, onToggle, id }: { q: string; a: string; open: boolean; onToggle: () => void; id: string }) {
+  const panel = useRef<HTMLDivElement>(null);
+  const mounted = useRef(false);
+
+  useIsoLayoutEffect(() => {
+    const el = panel.current;
+    if (!el) return;
+    if (!mounted.current) {
+      mounted.current = true;
+      gsap.set(el, { height: open ? "auto" : 0 });
+      return;
+    }
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    gsap.to(el, { height: open ? "auto" : 0, duration: reduce ? 0 : 0.5, ease: "power3.inOut" });
+  }, [open]);
 
   return (
-    <section id="faq" className="py-24 sm:py-32 bg-[#080d10] border-t border-b border-white/10 relative">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold text-emerald-400">
-            <HelpCircle className="h-3.5 w-3.5" />
-            <span>COMMON INQUIRIES</span>
-          </div>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-5xl">
-            Frequently Asked Questions
-          </h2>
-          <p className="mt-3 text-base sm:text-lg text-zinc-400">
-            Everything you need to know about Doc Scanner features, privacy, and compatibility.
-          </p>
-        </div>
+    <div data-reveal className="border-b border-black/10">
+      <h3>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={open}
+          aria-controls={id}
+          className="flex w-full items-center justify-between gap-6 py-6 text-left text-lg font-semibold text-ink transition-colors hover:text-brand-dark"
+        >
+          {q}
+          <span
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ${
+              open ? "rotate-45 border-brand bg-brand text-white" : "border-black/10 text-zinc-500"
+            }`}
+          >
+            <Plus className="h-4 w-4" />
+          </span>
+        </button>
+      </h3>
+      <div id={id} ref={panel} role="region" className={`overflow-hidden ${open ? "" : "h-0"}`} inert={!open}>
+        <p className="max-w-2xl pb-6 leading-relaxed text-zinc-600">{a}</p>
+      </div>
+    </div>
+  );
+}
 
-        {/* Accordion list */}
-        <div className="mt-14 space-y-4">
-          {faqs.map((faq, idx) => {
-            const isOpen = openIndex === idx;
-            return (
-              <div
-                key={idx}
-                className="overflow-hidden rounded-2xl border border-white/10 bg-[#0e161c]/90 transition-all shadow-lg"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="flex w-full items-center justify-between p-6 text-left text-base font-bold text-white hover:text-emerald-400 transition-colors"
-                >
-                  <span className="pr-4">{faq.q}</span>
-                  <ChevronDown
-                    className={`h-5 w-5 flex-shrink-0 text-zinc-400 transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-emerald-400" : ""
-                    }`}
-                  />
-                </button>
-                {isOpen && (
-                  <div className="px-6 pb-6 pt-1 text-sm text-zinc-300 leading-relaxed border-t border-white/10">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+export default function FAQ() {
+  const root = useRef<HTMLElement>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  useReveal(root);
+
+  return (
+    <section id="faq" ref={root} className="bg-white py-24 sm:py-32">
+      <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <p data-reveal className="text-sm font-bold uppercase tracking-[0.18em] text-brand">
+            FAQ
+          </p>
+          <h2 data-reveal className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl">
+            Questions, <span className="font-serif-italic text-brand">answered.</span>
+          </h2>
+        </div>
+        <div className="border-t border-black/10 lg:col-span-8">
+          {faqs.map((f, i) => (
+            <Item
+              key={f.q}
+              id={`faq-${i}`}
+              q={f.q}
+              a={f.a}
+              open={openIndex === i}
+              onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+            />
+          ))}
         </div>
       </div>
     </section>

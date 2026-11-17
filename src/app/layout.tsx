@@ -19,9 +19,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Doc Scanner — Document scanning made simple for modern smartphones",
+  title: "Doc Scanner: scan documents to clean PDFs on Android",
   description:
-    "The all-in-one privacy-first mobile scanner that captures documents, receipts, contracts, and IDs with real-time edge detection and zero cloud tracking.",
+    "Scan receipts, contracts and ID cards into clean, searchable PDFs on your phone. Auto crop, on-device text extraction, no watermarks and no account.",
   icons: {
     icon: "/icon.png",
     apple: "/icon.png",
@@ -36,9 +36,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} scroll-smooth antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#F8FAFC] text-[#0F172A] font-sans selection:bg-[#4F46E5] selection:text-white">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-brand selection:text-white">
         {children}
       </body>
     </html>
