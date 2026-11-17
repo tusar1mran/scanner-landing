@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ToolMarquee from "@/components/ToolMarquee";
 import ScanFlow from "@/components/ScanFlow";
+import WhatsNew from "@/components/WhatsNew";
 import ToolsGrid from "@/components/ToolsGrid";
 import Privacy from "@/components/Privacy";
 import ScreensGallery from "@/components/ScreensGallery";
@@ -19,6 +20,7 @@ export default function Home() {
         <Hero />
         <ToolMarquee />
         <ScanFlow />
+        <WhatsNew />
         <ToolsGrid />
         <Privacy />
         <ScreensGallery />

@@ -12,7 +12,11 @@ import {
   PenLine,
   QrCode,
   ScanLine,
+  Scissors,
   Search,
+  SlidersHorizontal,
+  FileUp,
+  FileArchive,
   Type,
 } from "lucide-react";
 import { gsap, useIsoLayoutEffect, useReveal, FULL_MOTION } from "@/lib/gsap";
@@ -22,9 +26,13 @@ const tools = [
   { icon: QrCode, name: "QR Code", desc: "Read QR codes with the camera.", tint: "bg-[#EEE9FE] text-[#7C5CF5]" },
   { icon: Images, name: "Import Images", desc: "Turn gallery photos into scans.", tint: "bg-[#E6EFFE] text-[#3B82F6]" },
   { icon: FileText, name: "To PDF", desc: "Export clean, shareable PDFs.", tint: "bg-[#FDE8E8] text-[#EF4444]" },
-  { icon: GitMerge, name: "Merge", desc: "Combine documents into one file.", tint: "bg-[#FEF3E2] text-[#F59E0B]" },
+  { icon: GitMerge, name: "Merge PDF", desc: "Join two or more PDFs into one document.", tint: "bg-[#FEF3E2] text-[#F59E0B]" },
   { icon: PenLine, name: "Sign", desc: "Add your signature to any page.", tint: "bg-[#E3F5F1] text-[#0FA58E]" },
   { icon: Droplet, name: "Watermark", desc: "Stamp your own text on pages.", tint: "bg-[#E6EFFE] text-[#3B82F6]" },
+  { icon: FileUp, name: "Import PDF", desc: "Open a PDF's pages in the editor.", tint: "bg-[#FDE8E8] text-[#EF4444]" },
+  { icon: Scissors, name: "Split PDF", desc: "Pick pages and save them as a new document.", tint: "bg-[#EEE9FE] text-[#7C5CF5]" },
+  { icon: FileArchive, name: "Compress PDF", desc: "Shrink a PDF before you share it.", tint: "bg-[#FEF3E2] text-[#F59E0B]" },
+  { icon: SlidersHorizontal, name: "Filters", desc: "Enhance, No Shadow, B&W and more.", tint: "bg-[#E3F5F1] text-[#0FA58E]" },
   { icon: Search, name: "Search", desc: "Find scans by title or text.", tint: "bg-[#EEE9FE] text-[#7C5CF5]" },
 ];
 

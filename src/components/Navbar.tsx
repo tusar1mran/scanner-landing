@@ -9,7 +9,8 @@ const links = [
   { href: "#tools", label: "Tools" },
   { href: "#privacy", label: "Privacy" },
   { href: "#screens", label: "Screens" },
-  { href: "#faq", label: "FAQ" },
+  { href: "#new", label: "What's new" },
+  { href: "/updates", label: "Updates" },
 ];
 
 export default function Navbar() {
