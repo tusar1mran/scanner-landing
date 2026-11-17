@@ -20,12 +20,12 @@ const highlights = [
   {
     icon: FileStack,
     title: "Full PDF toolkit",
-    desc: "Import, merge, split and compress PDFs. Saved documents reopen with their filter, rotation and crop, so you can edit them again.",
+    desc: "Import, merge, split and compress PDFs, export searchable PDFs or Word files, and tag documents to find them fast.",
   },
   {
     icon: LockKeyhole,
-    title: "Stronger App Lock",
-    desc: "The PIN is asked again after you leave the app, fingerprint and face unlock work, and changing the PIN needs the old one.",
+    title: "Locks for what matters",
+    desc: "Lock single documents or whole folders with fingerprint or PIN, password-protect PDFs, and open protected PDFs.",
   },
 ];
 

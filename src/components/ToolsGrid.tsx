@@ -14,6 +14,11 @@ import {
   ScanLine,
   Scissors,
   Search,
+  Eraser,
+  FileType,
+  ShieldCheck,
+  Lock,
+  Tag,
   SlidersHorizontal,
   FileUp,
   FileArchive,
@@ -33,7 +38,12 @@ const tools = [
   { icon: Scissors, name: "Split PDF", desc: "Pick pages and save them as a new document.", tint: "bg-[#EEE9FE] text-[#7C5CF5]" },
   { icon: FileArchive, name: "Compress PDF", desc: "Shrink a PDF before you share it.", tint: "bg-[#FEF3E2] text-[#F59E0B]" },
   { icon: SlidersHorizontal, name: "Filters", desc: "Enhance, No Shadow, B&W and more.", tint: "bg-[#E3F5F1] text-[#0FA58E]" },
-  { icon: Search, name: "Search", desc: "Find scans by title or text.", tint: "bg-[#EEE9FE] text-[#7C5CF5]" },
+  { icon: FileType, name: "To Word", desc: "Export a scan as a .docx file.", tint: "bg-[#E6EFFE] text-[#3B82F6]" },
+  { icon: ShieldCheck, name: "Protect PDF", desc: "Add a password to an exported PDF.", tint: "bg-[#FDE8E8] text-[#EF4444]" },
+  { icon: Eraser, name: "Eraser", desc: "White out marks or text on a page.", tint: "bg-[#FEF3E2] text-[#F59E0B]" },
+  { icon: Lock, name: "Lock Docs", desc: "Lock documents and folders with fingerprint or PIN.", tint: "bg-[#EEE9FE] text-[#7C5CF5]" },
+  { icon: Tag, name: "Tags", desc: "Tag documents and filter by tag.", tint: "bg-[#E3F5F1] text-[#0FA58E]" },
+  { icon: Search, name: "Search", desc: "Find scans by title or by the text inside pages.", tint: "bg-[#EEE9FE] text-[#7C5CF5]" },
 ];
 
 export default function ToolsGrid() {

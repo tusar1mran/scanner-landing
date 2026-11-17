@@ -15,6 +15,45 @@ export type Release = {
 export const releases: Release[] = [
   {
     date: "17 November 2026",
+    title: "Locks, tags, Word export and searchable PDFs",
+    groups: [
+      {
+        title: "Security",
+        items: [
+          { kind: "new", text: "Lock individual documents with fingerprint or the app PIN, from the document menu, the More menu or Tools → Lock Docs." },
+          { kind: "new", text: "Lock a whole folder: long-press it in Files." },
+          { kind: "new", text: "Password-protect a PDF from the Export PDF dialog or Tools → Protect PDF." },
+          { kind: "new", text: "Import password-protected PDFs in Import PDF, Merge PDF and Split PDF. A wrong password asks again." },
+        ],
+      },
+      {
+        title: "Organise and search",
+        items: [
+          { kind: "new", text: "Tags: create, add, remove and filter by tag. Tag chips appear in Files, and Tools → Tags is a shortcut." },
+          { kind: "new", text: "Search finds text inside pages. Text recognition runs in the background on its own." },
+          { kind: "new", text: "Add a document to your Home Screen as a shortcut (Android)." },
+        ],
+      },
+      {
+        title: "Export and edit",
+        items: [
+          { kind: "new", text: "Export to Word (.docx) from the document menu, the More menu or Tools → To Word." },
+          { kind: "new", text: "Searchable PDFs: an invisible text layer is added on export, on by default." },
+          { kind: "new", text: "Eraser (whiteout) in Markup and Sign, also available as Tools → Eraser." },
+          { kind: "new", text: "New Tools tiles: To Word, Protect PDF, Eraser, Lock Docs and Tags." },
+        ],
+      },
+      {
+        title: "Bug fixes",
+        items: [
+          { kind: "fixed", text: "Typing fast in search no longer shows old results or a wrong count." },
+          { kind: "fixed", text: "The text layer in searchable PDFs is now saved correctly." },
+        ],
+      },
+    ],
+  },
+  {
+    date: "17 November 2026",
     title: "New camera, real filters and PDF tools",
     groups: [
       {
@@ -80,7 +119,6 @@ export const releases: Release[] = [
     planned: [
       "Live page-edge detection in the camera preview",
       "AI clean-up filters (remove watermark, remove handwriting)",
-      "Opening password-protected PDFs",
       "Compressing an outside PDF without importing it first",
     ],
   },

@@ -43,7 +43,7 @@ export default function UpdatesPage() {
         </p>
 
         {releases.map((r) => (
-          <article key={r.date} className="mt-16 border-t border-black/10 pt-10">
+          <article key={r.title} className="mt-16 border-t border-black/10 pt-10">
             <time className="text-sm font-semibold text-zinc-500">{r.date}</time>
             <h2 className="mt-2 text-2xl font-bold text-ink sm:text-3xl">{r.title}</h2>
 
